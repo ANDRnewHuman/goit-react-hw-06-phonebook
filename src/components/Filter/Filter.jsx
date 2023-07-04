@@ -1,40 +1,21 @@
-import { connect } from 'react-redux';
-import contactsActions from '../../redux/contacts/contacts-actions';
-import PropTypes from 'prop-types';
-import s from './Filter.module.css';
-import shortid from 'shortid';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFilter, getFilterValue } from 'redux/filterSlice';
+import { StyledLabel, StyledInput } from './Filter.styled';
 
-const Filter = ({ name, onChange }) => {
-  let inputFilterId = shortid.generate();
+function Filter() {
+  const dispatch = useDispatch();
+  const filterValue = useSelector(getFilterValue);
   return (
-    <div className={s.filterWrapper}>
-      <label className={s.label} htmlFor={inputFilterId}>
-        <span>Find contacts by name</span>
-      </label>
-      <input
-        className={s.input}
+    <StyledLabel>
+      Find contacts by name
+      <StyledInput
+        name="filter"
         type="text"
-        placeholder="Search"
-        id={inputFilterId}
-        value={name}
-        onChange={onChange}
+        onChange={event => dispatch(setFilter(event.currentTarget.value))}
+        value={filterValue}
       />
-    </div>
+    </StyledLabel>
   );
-};
+}
 
-Filter.propTypes = {
-  name: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-};
-
-const mapStateToProps = state => ({
-  value: state.contacts.filter,
-});
-
-const mapDispatchToProps = dispatch => ({
-  onChange: event => dispatch(contactsActions.changeFilter(event.target.value)),
-  // clearFilter: () => dispatch(contactsActions.clearFilter('')),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
+export default Filter;
