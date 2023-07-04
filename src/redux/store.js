@@ -31,7 +31,7 @@ const contactsPersistConfig = {
 
 //development or production
 // console.log(process.env.NODE_ENV);
-const store = configureStore({
+const allStore = configureStore({
   reducer: {
     contacts: persistReducer(contactsPersistConfig, contactsReducer),
   },
@@ -39,6 +39,6 @@ const store = configureStore({
   devTools: process.env.NODE_ENV === 'development',
 });
 
-const persistor = persistStore(store);
+const allPersistor = persistStore(allStore);
 
-export default { store, persistor };
+export default { allStore, allPersistor };
